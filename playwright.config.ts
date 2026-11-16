@@ -6,19 +6,21 @@ export default defineConfig({
   // Test files location
   testDir: './tests',
 
-  // Run independent test files in parallel
+  // Run independent tests in parallel
   fullyParallel: true,
 
-  // Prevent test.only from being committed in CI
+  // Prevent test.only in CI
   forbidOnly: !!process.env.CI,
 
   // Retry failed tests only in CI
   retries: process.env.CI ? 2 : 0,
 
-  // Use one worker in CI; default worker count locally
-  workers: process.env.CI ? 10 : undefined,
+  // Configurable workers from GitHub Actions
+  workers: process.env.PW_WORKERS
+    ? Number(process.env.PW_WORKERS)
+    : (process.env.CI ? 4 : undefined),
 
-  // Maximum execution time for one test
+  // Test timeout
   timeout: 30_000,
 
   // Assertion timeout
@@ -26,35 +28,30 @@ export default defineConfig({
     timeout: 5_000,
   },
 
-  // Test reporting
+  // Default reporter (overridden by CLI in GitHub Actions)
   reporter: 'html',
 
   // Shared browser and test settings
   use: {
-    // Application base URL
     baseURL: 'https://www.saucedemo.com',
 
-    // SauceDemo marks stable test locators with data-test
     testIdAttribute: 'data-test',
 
-    // Default timeout for locator actions
     actionTimeout: 10_000,
 
-    // Default timeout for navigation actions
     navigationTimeout: 15_000,
 
-    // Capture screenshot on failure
     screenshot: 'only-on-failure',
 
-    // Capture trace on first retry
     trace: 'on-first-retry',
 
-    // Retain video when a test fails
     video: 'retain-on-failure',
   },
 
   // Browser projects
   projects: [
+
+    // Desktop Chromium
     {
       name: 'chromium',
       use: {
@@ -62,37 +59,46 @@ export default defineConfig({
       },
     },
 
-     {
-
+    // Microsoft Edge
+    {
       name: 'microsoft edge',
-      use :{
-      ...devices['Desktop Edge'],
-      channel: 'msedge'
+      use: {
+        ...devices['Desktop Chrome'],
+        channel: 'msedge',
+      },
     },
 
-    },
-
-    //Enable later if cross-browser testing is required
+    // Desktop Firefox
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
+      use: {
+        ...devices['Desktop Firefox'],
+      },
     },
 
-     {
+    // Desktop Safari (WebKit)
+    {
+      name: 'webkit',
+      use: {
+        ...devices['Desktop Safari'],
+      },
+    },
+
+    // Mobile Chrome
+    {
       name: 'Mobile Chrome',
       use: {
         ...devices['Pixel 7'],
       },
     },
+
+    // Mobile Safari
     {
       name: 'Mobile Safari',
       use: {
         ...devices['iPhone 13'],
       },
     },
+
   ],
 });
