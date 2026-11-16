@@ -16,7 +16,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
 
   // Use one worker in CI; default worker count locally
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 10 : undefined,
 
   // Maximum execution time for one test
   timeout: 30_000,
@@ -62,37 +62,37 @@ export default defineConfig({
       },
     },
 
-    // {
+     {
 
-    //   name: 'microsoft edge',
-    //   use :{
-    //   ...devices['Desktop Edge'],
-    //   channel: 'msedge'
-    // },
+      name: 'microsoft edge',
+      use :{
+      ...devices['Desktop Edge'],
+      channel: 'msedge'
+    },
 
-    // },
+    },
 
-    // //Enable later if cross-browser testing is required
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
-    // {
-    //   name: 'webkit',
-    //   use: { ...devices['Desktop Safari'] },
-    // },
+    //Enable later if cross-browser testing is required
+    {
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'] },
+    },
+    {
+      name: 'webkit',
+      use: { ...devices['Desktop Safari'] },
+    },
 
-    //  {
-    //   name: 'Mobile Chrome',
-    //   use: {
-    //     ...devices['Pixel 7'],
-    //   },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: {
-    //     ...devices['iPhone 13'],
-    //   },
-    // },
+     {
+      name: 'Mobile Chrome',
+      use: {
+        ...devices['Pixel 7'],
+      },
+    },
+    {
+      name: 'Mobile Safari',
+      use: {
+        ...devices['iPhone 13'],
+      },
+    },
   ],
 });

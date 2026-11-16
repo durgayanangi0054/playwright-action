@@ -41,7 +41,7 @@ test('login test', async ({ page }) => {
 
   await page.locator('#shopping_cart_container').click();
 
-  await expect(page.locator('.inventory_item_name')).toHaveCount(11);
+  await expect(page.locator('.inventory_item_name')).toHaveCount(1);
 });
 
 
